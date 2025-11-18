@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|c:\\users\\me_fa\\documents\\github\\team41-game\\greatgame\\assets\\camerafollowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\camerafollowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|c:\\users\\me_fa\\documents\\github\\team41-game\\greatgame\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,12 +23,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "CameraFollowScript.cs",
+              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\CameraFollowScript.cs",
+              "RelativeDocumentMoniker": "Assets\\CameraFollowScript.cs",
+              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\CameraFollowScript.cs",
+              "RelativeToolTip": "Assets\\CameraFollowScript.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-18T05:29:19.882Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\Scripts\\PlayerController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
               "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\Scripts\\PlayerController.cs",
               "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAA+wDIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAqwDIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T11:15:27.639Z",
               "EditorCaption": ""
