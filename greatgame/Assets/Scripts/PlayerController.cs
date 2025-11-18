@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
-    float speed = 2.0f;
+    [SerializeField] float walkSpeed = 2.0f;
+    [SerializeField] private Rigidbody2D playerBody;
+    [SerializeField] private Vector2 playerVelocity;
+
     void Start()
     {
         
@@ -14,28 +18,47 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal"); 
-        float moveY = Input.GetAxis("Vertical");   
-        if (Input.GetKey(KeyCode.W))
+        playerVelocity.x = Input.GetAxis("Horizontal") * walkSpeed;
+        playerVelocity.y = Input.GetAxis("Vertical") * walkSpeed;
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    Vector2 movement = new Vector3(moveX, moveY, 0f);
+        //    transform.position += (Vector3) movement * speed * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    Vector2 movement = new Vector3(moveX, moveY, 0f);
+        //    transform.position += (Vector3) movement * speed * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    Vector2 movement = new Vector3(moveX, moveY, 0f);
+        //    transform.position += (Vector3) movement * speed * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    Vector2 movement = new Vector3(moveX, moveY, 0f);
+        //    transform.position += (Vector3) movement * speed * Time.deltaTime;
+        //}
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            Vector2 movement = new Vector3(moveX, moveY, 0f);
-            transform.position += (Vector3) movement * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.A))
+            playerBody.velocity = Vector2.ClampMagnitude(playerVelocity, walkSpeed);
+        } 
+        else
         {
-            Vector2 movement = new Vector3(moveX, moveY, 0f);
-            transform.position += (Vector3) movement * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            Vector2 movement = new Vector3(moveX, moveY, 0f);
-            transform.position += (Vector3) movement * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            Vector2 movement = new Vector3(moveX, moveY, 0f);
-            transform.position += (Vector3) movement * speed * Time.deltaTime;
+            playerBody.velocity = new Vector2(0, 0);
         }
 
+        if (Input.GetKey(KeyCode.E))
+        {
+            Interact();
+        }
+
+    }
+
+    private void Interact()
+    {
+        return;
     }
 }
