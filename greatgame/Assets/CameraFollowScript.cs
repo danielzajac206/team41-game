@@ -16,7 +16,7 @@ public class CameraFollowScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Camera.main.orthographicSize = 4;
+        Camera.main.orthographicSize = 7;
         velocity = Vector3.zero;
     }
 
