@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -5,12 +6,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float walkSpeed = 2.0f;
-    [SerializeField] private Rigidbody2D playerBody;
-    [SerializeField] private Vector2 playerVelocity;
-
-    private bool inAction;
-
+    // Start is called before the first frame update
+    float speed = 2.0f;
+    float health = 100f;
     void Start()
     {
         inAction = false;
@@ -19,15 +17,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerVelocity.x = Input.GetAxis("Horizontal") * walkSpeed;
-        playerVelocity.y = Input.GetAxis("Vertical") * walkSpeed;
+        //Debug.LogError("PLAYER HEALTH:" + health);
 
-        // Walking
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            playerBody.velocity = Vector2.ClampMagnitude(playerVelocity, walkSpeed);
-        } 
-        else
+        float moveX = Input.GetAxis("Horizontal"); 
+        float moveY = Input.GetAxis("Vertical");   
+        if (Input.GetKey(KeyCode.W))
+
         {
             playerBody.velocity = new Vector2(0, 0);
         }
@@ -61,5 +56,9 @@ public class PlayerController : MonoBehaviour
     private void Attack()
     {
         return;
+    }
+
+    public void playerTakeDamage(float taken) {
+        health -= taken;
     }
 }
