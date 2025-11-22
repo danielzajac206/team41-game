@@ -28,11 +28,9 @@ public class GreenChargeButton : MonoBehaviour
 
     public void Interact()
     {
-        // Stop interaction if already done
         if (isComplete) return;
 
         currentClicks++;
-        Debug.Log($"Button Charge: {currentClicks}/{clicksRequired}");
 
         UpdateColor();
 
@@ -46,26 +44,19 @@ public class GreenChargeButton : MonoBehaviour
     {
         if (spriteRenderer == null) return;
 
-        // Calculate percentage (0.0 to 1.0)
         float progress = Mathf.Clamp01((float)currentClicks / clicksRequired);
         
-        // Blend the color from Start to Target based on progress
         spriteRenderer.color = Color.Lerp(startColor, targetColor, progress);
     }
 
     private void CompletePuzzle()
     {
         isComplete = true;
-        Debug.Log("CHARGE PUZZLE COMPLETE! Spawning Chest...");
 
         if (chestPrefab != null)
         {
             Vector3 spawnPos = new Vector3(spawnX, spawnY, 0f);
             Instantiate(chestPrefab, spawnPos, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("Puzzle Solved, but Chest Prefab is missing on the GreenChargeButton!");
         }
     }
 }

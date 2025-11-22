@@ -48,16 +48,6 @@ public class EnemyAI : MonoBehaviour
         {
             playerTarget = playerObj.transform;
             playerScript = playerObj.GetComponent<PlayerController>();
-            
-            // Debug check: specific warning if script is missing
-            if (playerScript == null)
-            {
-                Debug.LogError("Enemy found object tagged 'Player', but it is missing the 'PlayerController' script!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Enemy could not find any object with tag 'Player'.");
         }
     }
 
@@ -67,7 +57,6 @@ public class EnemyAI : MonoBehaviour
 
         float distanceToPlayer = Vector2.Distance(transform.position, playerTarget.position);
 
-        // Combat Logic
         if (distanceToPlayer <= attackRadius && Time.time >= nextAttackTime)
         {
             AttackPlayer();
@@ -81,8 +70,6 @@ public class EnemyAI : MonoBehaviour
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTarget.position);
 
-            // Move if within follow range, but stop if we are close enough to attack
-            // We use a slightly smaller buffer (0.9) to ensure we walk fully INTO range
             if (distanceToPlayer <= followRange && distanceToPlayer > attackRadius * 0.9f)
             {
                 Vector2 direction = (playerTarget.position - transform.position).normalized;
@@ -96,8 +83,6 @@ public class EnemyAI : MonoBehaviour
     {
         if (playerScript != null)
         {
-            Debug.Log("Enemy is Attacking Player!"); // Debug log to confirm it works
-            
             playerScript.TakeDamage(damageToPlayer);
 
             Vector2 pushDir = (playerTarget.position - transform.position).normalized;

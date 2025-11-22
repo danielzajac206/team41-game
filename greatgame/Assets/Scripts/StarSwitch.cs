@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class StarSwitch : MonoBehaviour
 {
-    // 0 = bottom left, 1 = top, etc.
     public int switchIndex;
     public StarPuzzleController controller;
 
@@ -20,8 +19,6 @@ public class StarSwitch : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // This only runs for the one you clicked
-        Debug.Log("Clicked switch " + switchIndex);
         controller.HitSwitch(this);
     }
 
