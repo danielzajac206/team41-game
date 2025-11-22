@@ -7,10 +7,10 @@ using UnityEngine;
 public class GreenButton : MonoBehaviour
 {
     [Header("Settings")]
-    public bool isWinningButton = false; // Check this for the ONE correct button
+    public bool isWinningButton = false;
     
     [SerializeField] Color correctColor = Color.green;
-    [SerializeField] Color wrongColor = new Color(0.3f, 0.5f, 0.3f); // Dull/Off-Green
+    [SerializeField] Color wrongColor = new Color(0.3f, 0.5f, 0.3f); 
 
     private GreenButtonController controller;
     private SpriteRenderer spriteRenderer;
@@ -20,7 +20,6 @@ public class GreenButton : MonoBehaviour
         controller = FindObjectOfType<GreenButtonController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Set color automatically based on if this is the winner or not
         if (spriteRenderer != null)
         {
             spriteRenderer.color = isWinningButton ? correctColor : wrongColor;
@@ -31,20 +30,10 @@ public class GreenButton : MonoBehaviour
     {
         if (isWinningButton)
         {
-             // We found the correct one!
              if (controller != null) 
              {
                  controller.SpawnReward();
              }
-             else
-             {
-                 Debug.Log("Winner found! (But no GreenButtonController in scene to spawn chest)");
-             }
-        }
-        else
-        {
-             // Optional: Feedback for clicking wrong button
-             Debug.Log("Nothing happened. Wrong button.");
         }
     }
 }
