@@ -171,6 +171,9 @@ MonoBehaviour:
   animator: {fileID: 0}
   hitboxPrefab: {fileID: 6302557652921567538, guid: 3f432311bd9c20948b29e2fb1fa418ae, type: 3}
   fireballPrefab: {fileID: 1947253096565544662, guid: 0d5b1d7ae6342ad4cae526cf580ad112, type: 3}
+  attackBuffered: 0
+  comboStep: 0
+  comboResetTime: 0.4
 --- !u!95 &7733937990507642758
 Animator:
   serializedVersion: 5

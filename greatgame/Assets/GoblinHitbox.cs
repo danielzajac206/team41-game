@@ -16,7 +16,8 @@ public class GoblinHitbox : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+            Vector2 knockbackDir = collision.transform.position - transform.position;
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, knockbackDir, 10f);
         }
     }
 }

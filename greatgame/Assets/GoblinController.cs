@@ -13,20 +13,27 @@ public class GoblinController : MonoBehaviour
     public float attackDuration = 0.75f;
     public float attackCooldown = .5f;
 
-    private Animator animator;
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
+    protected Animator animator;
+    protected Rigidbody2D rb;
+    protected SpriteRenderer spriteRenderer;
 
 
-    private bool isAttacking = false;
-    private float attackTimer = 0f;
-    private float cooldownTimer = 0f;
-    private Vector2 attackDirection;
-    private bool isDead = false;
+    protected bool isAttacking = false;
+    protected float attackTimer = 0f;
+    protected float cooldownTimer = 0f;
+    protected Vector2 attackDirection;
+    protected bool isDead = false;
 
     public GameObject hitboxPrefab;
 
-    void Start()
+    public float viewRadius = 15f;
+    public float viewAngle = 90f;
+    public LayerMask playerLayer;
+    public LayerMask obstacleLayer;
+
+    protected bool isKnockedback = false;
+
+    protected void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -35,7 +42,7 @@ public class GoblinController : MonoBehaviour
         health = maxHealth;
     }
 
-    void Update()
+    protected void Update()
     {
         if (isDead)
         {
@@ -46,10 +53,6 @@ public class GoblinController : MonoBehaviour
         Vector2 dir = player.position - transform.position;
         float distance = dir.magnitude;
 
-        if (attackTimer > 0f)
-            attackTimer -= Time.deltaTime;
-        if (cooldownTimer > 0f)
-            cooldownTimer -= Time.deltaTime;
         if (isAttacking)
         {
             attackTimer -= Time.deltaTime;
@@ -60,7 +63,11 @@ public class GoblinController : MonoBehaviour
             rb.velocity = Vector2.zero;
             return;
         }
-
+        else
+        {
+            if (cooldownTimer > 0f)
+                cooldownTimer -= Time.deltaTime;
+        }
         if (distance <= attackRange)
         {
             if (cooldownTimer <= 0f)
@@ -71,11 +78,105 @@ public class GoblinController : MonoBehaviour
         }
         else
         {
-            Move(dir);
+            //Move(dir);
+            CheckVision();
+        }
+    }
+    bool LookForPlayer()
+    {
+        Vector2 dir = (player.position - transform.position).normalized;
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        Vector2 forward;
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        {
+            forward = dir.x > 0 ? Vector2.right : Vector2.left;
+        }
+        else
+        {
+            forward = dir.y > 0 ? Vector2.up : Vector2.down;
+        }
+
+        if (distanceToPlayer > viewRadius)
+            return false;
+
+        float angleToPlayer = Vector2.Angle(forward, dir);
+        if (angleToPlayer > viewAngle / 2)
+            return false;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceToPlayer, obstacleLayer);
+        if (hit.collider != null)
+            return false;
+
+        return true;
+    }
+
+    protected void CheckVision()
+    {
+        if (isKnockedback) { return; }
+        Collider2D playerInRange = Physics2D.OverlapCircle(transform.position, viewRadius, playerLayer);
+        if (playerInRange != null)
+        {
+            Vector2 dir = (playerInRange.transform.position - transform.position).normalized;
+            Vector2 forward;
+            if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+            {
+                forward = dir.x > 0 ? transform.right : -transform.right;
+            }
+            else
+            {
+                forward = dir.y > 0 ? transform.up : -transform.up;
+            }
+            float angleBetween = Vector2.Angle(forward, dir);
+
+            if (angleBetween < viewAngle / 2)
+            {
+                //RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, viewRadius, obstacleLayer);
+                //if (hit.collider == null)
+                //{
+                //    Debug.Log("player spotted");
+                //    Move(dir);
+                //}
+                //else
+                //{
+                //    Debug.Log("view blocked by" + hit.collider.name);
+                //}
+                Move(dir);
+            }
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            animator.SetTrigger("Idle");
         }
     }
 
-    void Move(Vector2 dir)
+
+    protected void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, viewRadius);
+
+        Vector2 dir = (player.position - transform.position).normalized;
+        Vector2 forward;
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        {
+            forward = dir.x > 0 ? transform.right : -transform.right;
+        }
+        else
+        {
+            forward = dir.y > 0 ? transform.up : -transform.up;
+        }
+        Vector3 leftDir = Quaternion.Euler(0, 0, -viewAngle / 2) * forward;
+        Vector3 rightDir = Quaternion.Euler(0, 0, viewAngle / 2) * forward;
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.position + leftDir * viewRadius);
+        Gizmos.DrawLine(transform.position, transform.position + rightDir * viewRadius);
+    }
+
+
+    protected virtual void Move(Vector2 dir)
     {
         Vector2 moveDir = dir.normalized;
         rb.velocity = moveDir * moveSpeed;
@@ -102,7 +203,7 @@ public class GoblinController : MonoBehaviour
         }
     }
 
-    void Attack(Vector2 dir)
+    protected virtual void Attack(Vector2 dir)
     {
         isAttacking = true;
         attackTimer = attackDuration;
@@ -161,10 +262,12 @@ public class GoblinController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage, Vector2 direction, float force)
     {
         if (isDead) return;
         health -= damage;
+
+        StartCoroutine(Knockback(direction, force, 0.1f));
         if (health <= 0)
         {
             health = 0;
@@ -176,7 +279,23 @@ public class GoblinController : MonoBehaviour
         }
     }
 
-    void DeathAnim(Vector2 dir)
+    protected IEnumerator Knockback(Vector2 direction, float force, float duration)
+    {
+        isKnockedback = true;
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            rb.velocity = direction.normalized * force;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.velocity = Vector2.zero;
+        isKnockedback = false;
+    }
+
+    protected virtual void DeathAnim(Vector2 dir)
     {
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
@@ -203,7 +322,7 @@ public class GoblinController : MonoBehaviour
             }
         }
     }
-    void DestroyObject()
+    protected void DestroyObject()
     {
         Destroy(gameObject);
     }

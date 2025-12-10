@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class PlayerHitbox : MonoBehaviour
@@ -16,7 +17,8 @@ public class PlayerHitbox : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.gameObject.GetComponent<GoblinController>().TakeDamage(damage);
+            Vector2 knockbackDir = collision.transform.position - transform.position;
+            collision.gameObject.GetComponent<GoblinController>().TakeDamage(damage, knockbackDir, 10f);
         }
     }
 }

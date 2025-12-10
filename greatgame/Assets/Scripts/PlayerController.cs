@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,14 +18,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] GameObject hitboxPrefab;
     [SerializeField] GameObject fireballPrefab;
+    [SerializeField] GameObject bowPrefab;
 
     private bool inAction;
     //private List<KeyCode> keyStack = new List<KeyCode>();
     private string lastDir;
     private bool isAttacking = false;
-    private float attackTimer = 0f;
-    private float attackDuration = 0.55f;
+    [SerializeField] private bool attackBuffered = false;
+    //private float attackDuration = 0.55f;
     private Vector2 attackDirection;
+
+    [SerializeField] private int comboStep = 0;
+    [SerializeField] private float comboResetTime = 0.4f;
+    private float comboTimer = 0f;
+
+    public bool isLocked = false;
+
+    private bool isKnockedback = false;
+    private bool isDead = false;
 
     void Start()
     {
@@ -35,6 +47,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isKnockedback)
+        {
+            return;
+        }
         //playerVelocity = new Vector2(x, y) * walkSpeed;
         playerBody.velocity = Vector2.ClampMagnitude(playerVelocity, walkSpeed);
     }
@@ -42,6 +58,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = mousePos - (Vector2)transform.position;
 
@@ -77,15 +97,58 @@ public class PlayerController : MonoBehaviour
             }
         }*/
 
+        if (isLocked)
+        {
+            playerBody.velocity = Vector2.zero;
+            playerVelocity = Vector2.zero;
+            if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+            {
+                if (dir.x > 0)
+                {
+                    animator.Play("playeridle-right");
+                }
+                else
+                {
+                    animator.Play("playeridle-left");
+                }
+            }
+            else
+            {
+                if (dir.y > 0)
+                {
+                    animator.Play("playeridle-up");
+                }
+                else
+                {
+                    animator.Play("playeridle-down");
+                }
+            }
+
+            return;
+        }
+
+        if (comboStep > 0)
+        {
+            comboTimer += Time.deltaTime;
+            if (comboTimer > comboResetTime && !isAttacking)
+            {
+                comboStep = 0;
+                comboTimer = 0f;
+            }
+        }
+
         if (isAttacking)
         {
             playerBody.velocity = new Vector2(0, 0);
             playerVelocity = new Vector2(0, 0);
-            attackTimer -= Time.deltaTime;
-            if (attackTimer <= 0f) { 
-                isAttacking = false;
+            //attackTimer -= Time.deltaTime;
+            //if (attackTimer <= 0f) { 
+            //    isAttacking = false;
+            //}
+            if (Input.GetMouseButtonDown(0))
+            {
+                attackBuffered = true;
             }
-
             return;
         }
 
@@ -164,13 +227,31 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            AttackMelee(dir);
-            Debug.Log("Attack");
+            //StartCoroutine(AttackMelee(dir));
+            //Debug.Log("Attack");
+            if (!isAttacking)
+            {
+                comboStep = 1;  // Start combo
+                AttackMelee(dir);
+            }
+            else
+            {
+                // Buffer next hit
+                attackBuffered = true;
+            }
         }
-        if (Input.GetMouseButtonDown(1))
+
+        // shooting bow 
+        else if (Input.GetMouseButtonDown(1))
         {
-            ShootProjectile(dir);
-            Debug.Log("Fireball");
+            //ShootProjectile(dir);
+            //Debug.Log("Fireball");
+            //Time.timeScale = 0.25f;
+            Vector3 pos = transform.position;
+            pos.z = -0.02f;
+            GameObject bow = Instantiate(bowPrefab, pos, transform.rotation, transform);
+            bow.transform.localScale = new Vector3(1f/transform.lossyScale.x, 1f / transform.lossyScale.y, 1f / transform.lossyScale.z);
+            //animator.speed = 0f;
         }
     }
 
@@ -187,31 +268,165 @@ public class PlayerController : MonoBehaviour
     private void AttackMelee(Vector2 dir)
     {
         isAttacking = true;
-        attackTimer = attackDuration;
+        attackBuffered = false;
         attackDirection = dir;
-        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+
+        if (comboStep == 1)
         {
-            if (dir.x > 0)
+            if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
             {
-                animator.Play("player-attack1-right");
+                if (dir.x > 0)
+                {
+                    animator.Play("player-attack1-right");
+                }
+                else
+                {
+                    animator.Play("player-attack1-left");
+                }
             }
             else
             {
-                animator.Play("player-attack1-left");
+                if (dir.y > 0)
+                {
+                    animator.Play("player-attack1-up");
+                }
+                else
+                {
+                    animator.Play("player-attack1-down");
+                }
             }
         }
         else
         {
-            if (dir.y > 0)
+            if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
             {
-                animator.Play("player-attack1-up");
+                if (dir.x > 0)
+                {
+                    animator.Play("player-attack2-right");
+                }
+                else
+                {
+                    animator.Play("player-attack2-left");
+                }
             }
             else
             {
-                animator.Play("player-attack1-down");
+                if (dir.y > 0)
+                {
+                    animator.Play("player-attack2-up");
+                }
+                else
+                {
+                    animator.Play("player-attack2-down");
+                }
             }
         }
     }
+
+    public void Combo()
+    {
+        if (attackBuffered && comboStep == 1)
+        {
+            comboStep = 2;
+            AttackMelee(attackDirection);
+        }
+    }
+
+    public void AttackEnd()
+    {
+        if (comboStep == 2)
+        {
+            comboStep = 0;
+            isAttacking = false;
+            return;
+        }
+
+        if (comboStep == 1 && !attackBuffered)
+        {
+            comboStep = 0;
+        }
+
+        isAttacking = false;
+    }
+
+    //IEnumerator AttackMelee(Vector2 dir)
+    //{
+    //    isAttacking = true;
+    //    attackBuffered = false;
+
+    //    attackDirection = dir;
+    //    comboTimer = 0f;
+    //    if (comboStep == 1)
+    //    {
+    //        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+    //        {
+    //            if (dir.x > 0)
+    //            {
+    //                animator.Play("player-attack1-right");
+    //            }
+    //            else
+    //            {
+    //                animator.Play("player-attack1-left");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (dir.y > 0)
+    //            {
+    //                animator.Play("player-attack1-up");
+    //            }
+    //            else
+    //            {
+    //                animator.Play("player-attack1-down");
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+    //        {
+    //            if (dir.x > 0)
+    //            {
+    //                animator.Play("player-attack2-right");
+    //            }
+    //            else
+    //            {
+    //                animator.Play("player-attack2-left");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (dir.y > 0)
+    //            {
+    //                animator.Play("player-attack2-up");
+    //            }
+    //            else
+    //            {
+    //                animator.Play("player-attack2-down");
+    //            }
+    //        }
+    //    }
+    //    float timer = 0f;
+    //    while (timer < attackDuration)
+    //    {
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    isAttacking = false;
+    //    if (attackBuffered && comboStep == 1)
+    //    {
+    //        comboStep = 2;
+    //        comboTimer = 0f;
+    //        StartCoroutine(AttackMelee(dir));
+    //    }
+    //    else
+    //    {
+    //        if (comboStep == 2)
+    //        {
+    //            comboStep = 0;
+    //        }
+    //    }
+    //}
 
     private void ShootProjectile(Vector2 dir)
     {
@@ -248,14 +463,15 @@ public class PlayerController : MonoBehaviour
     public void SpawnHitbox()
     {
         Vector3 spawnPos = transform.position;
+        spawnPos.z = -0.01f;
 
         if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
         {
-            spawnPos.x += attackDirection.x > 0 ? 1 : -1;
+            spawnPos.x += attackDirection.x > 0 ? 1.6f : -1.6f;
         }
         else
         {
-            spawnPos.y += attackDirection.y > 0 ? 1 : -1;
+            spawnPos.y += attackDirection.y > 0 ? 1.6f : -1.6f;
         }
 
         GameObject hb = Instantiate(hitboxPrefab, spawnPos, Quaternion.identity);
@@ -270,13 +486,50 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector2 direction, float force)
     {
+        if (isDead) { return; }
         health -= damage;
-        if (health < 0)
+
+        StartCoroutine(Knockback(direction, force, 0.1f));
+        if (health <= 0)
         {
             health = 0;
+            isDead = true;
+            playerBody.velocity = Vector3.zero;
+            Death();
         }
         healthScript.UpdateHealth(health);
+    }
+
+    IEnumerator Knockback(Vector2 direction, float force, float duration)
+    {
+        isKnockedback = true;
+
+        playerBody.velocity = Vector2.zero;
+        float timer = 0f;
+        while (timer < duration)
+        {
+            playerBody.velocity = direction.normalized * force;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        playerBody.velocity = Vector2.zero;
+        isKnockedback = false;
+    }
+
+    void Death()
+    {
+        playerBody.bodyType = RigidbodyType2D.Static;
+        animator.Play("player-death");
+        Time.timeScale = 0.25f;
+        StartCoroutine(DeathAnim());
+    }
+
+    IEnumerator DeathAnim()
+    {
+        yield return new WaitForSecondsRealtime(4f);
+        Time.timeScale = 0f;
     }
 }
