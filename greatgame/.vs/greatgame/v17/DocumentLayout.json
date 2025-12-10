@@ -3,28 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|c:\\users\\me_fa\\documents\\github\\team41-game\\greatgame\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\goblincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\goblincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|c:\\users\\me_fa\\documents\\github\\team41-game\\greatgame\\assets\\witchdoctorscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\witchdoctorscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\arrowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\arrowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\fireballscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\fireballscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\playerhitbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\playerhitbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\goblinhitbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\goblinhitbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|c:\\users\\me_fa\\documents\\github\\team41-game\\greatgame\\assets\\fireballscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\fireballscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|c:\\users\\me_fa\\documents\\github\\team41-game\\greatgame\\assets\\playerhitbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\playerhitbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\healthscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\healthscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\bowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|solutionrelative:assets\\bowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FCBF21B6-5B0A-6AB6-D536-46668E3B936C}|Assembly-CSharp.csproj|C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\assets\\camerafollowscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,24 +50,89 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "WitchDoctorScript.cs",
+              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\WitchDoctorScript.cs",
+              "RelativeDocumentMoniker": "Assets\\WitchDoctorScript.cs",
+              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\WitchDoctorScript.cs",
+              "RelativeToolTip": "Assets\\WitchDoctorScript.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAUwGIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T20:11:54.651Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GoblinController.cs",
+              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\GoblinController.cs",
+              "RelativeDocumentMoniker": "Assets\\GoblinController.cs",
+              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\GoblinController.cs",
+              "RelativeToolTip": "Assets\\GoblinController.cs",
+              "ViewState": "AgIAAAEBAAAAAAAAAAAAwEIBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T12:41:43.957Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "ArrowScript.cs",
+              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\ArrowScript.cs",
+              "RelativeDocumentMoniker": "Assets\\ArrowScript.cs",
+              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\ArrowScript.cs",
+              "RelativeToolTip": "Assets\\ArrowScript.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAA9wCUAAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T18:42:38.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
+              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
+              "ViewState": "AgIAAPEBAAAAAAAAAAAawBQCAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T08:31:09.571Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BowScript.cs",
+              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\BowScript.cs",
+              "RelativeDocumentMoniker": "Assets\\BowScript.cs",
+              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\BowScript.cs",
+              "RelativeToolTip": "Assets\\BowScript.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAQwIMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T11:07:30.119Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "FireballScript.cs",
               "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\FireballScript.cs",
               "RelativeDocumentMoniker": "Assets\\FireballScript.cs",
               "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\FireballScript.cs",
               "RelativeToolTip": "Assets\\FireballScript.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T14:20:34.38Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "HealthScript.cs",
               "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\HealthScript.cs",
               "RelativeDocumentMoniker": "Assets\\HealthScript.cs",
@@ -68,65 +145,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "PlayerHitbox.cs",
               "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\PlayerHitbox.cs",
               "RelativeDocumentMoniker": "Assets\\PlayerHitbox.cs",
               "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\PlayerHitbox.cs",
               "RelativeToolTip": "Assets\\PlayerHitbox.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T13:31:22.733Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "GoblinHitbox.cs",
               "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\GoblinHitbox.cs",
               "RelativeDocumentMoniker": "Assets\\GoblinHitbox.cs",
               "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\GoblinHitbox.cs",
               "RelativeToolTip": "Assets\\GoblinHitbox.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T13:15:24.017Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "GoblinController.cs",
-              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\GoblinController.cs",
-              "RelativeDocumentMoniker": "Assets\\GoblinController.cs",
-              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\GoblinController.cs",
-              "RelativeToolTip": "Assets\\GoblinController.cs",
-              "ViewState": "AgIAAJcAAAAAAAAAAAAiwKYAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T12:41:43.957Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PlayerController.cs",
-              "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
-              "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
-              "ViewState": "AgIAAMkAAAAAAAAAAAAAAPMAAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T08:31:09.571Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "CameraFollowScript.cs",
               "DocumentMoniker": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\CameraFollowScript.cs",
               "RelativeDocumentMoniker": "Assets\\CameraFollowScript.cs",
               "ToolTip": "C:\\Users\\me_FA\\Documents\\GitHub\\team41-game\\greatgame\\Assets\\CameraFollowScript.cs",
               "RelativeToolTip": "Assets\\CameraFollowScript.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAqwB8AAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAqwB0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T07:57:15.56Z"
             }

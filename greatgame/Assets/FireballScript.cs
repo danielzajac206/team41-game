@@ -6,7 +6,7 @@ using UnityEngine;
 public class FireballScript : MonoBehaviour
 {
     public float speed = 10f;
-    public float damage = 50f;
+    public int damage = 2;
 
     private Rigidbody2D rb;
     [SerializeField] Animator animator;
@@ -38,9 +38,11 @@ public class FireballScript : MonoBehaviour
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 0.5f);
         foreach (var hit in hitColliders)
         {
-            if (hit.CompareTag("Enemy"))
+            if (hit.CompareTag("Player"))
             {
-                hit.GetComponent<GoblinController>()?.TakeDamage(damage);
+                //hit.GetComponent<GoblinController>()?.TakeDamage(damage);
+                Vector2 knockbackDir = hit.transform.position - transform.position;
+                hit.GetComponent<PlayerController>()?.TakeDamage(damage, knockbackDir, 20f);
             }
         }
 
