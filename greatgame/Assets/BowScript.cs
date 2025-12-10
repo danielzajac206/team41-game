@@ -28,7 +28,7 @@ public class BowScript : MonoBehaviour
         mousePos.z = Mathf.Abs(Camera.main.transform.position.z - player.position.z);
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
         Vector3 dir = (mousePos - player.position).normalized;
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && player.gameObject.GetComponent<PlayerController>().bowCooldownTimer <= 0)
         {
             arrow.GetComponent<BoxCollider2D>().enabled = false;
 
@@ -73,6 +73,7 @@ public class BowScript : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(1))
             {
+                player.gameObject.GetComponent<PlayerController>().bowCooldownTimer = player.gameObject.GetComponent<PlayerController>().bowCooldown;
                 arrow.GetComponent<BoxCollider2D>().enabled = true;
                 animator.Play("bow_shoot");
                 arrow.transform.parent = null;

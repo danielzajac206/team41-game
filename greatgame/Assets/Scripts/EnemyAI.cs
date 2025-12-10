@@ -59,7 +59,7 @@ public class EnemyAI : MonoBehaviour
 
         if (distanceToPlayer <= attackRadius && Time.time >= nextAttackTime)
         {
-            AttackPlayer();
+            //AttackPlayer();
             nextAttackTime = Time.time + attackCooldown;
         }
     }
@@ -79,16 +79,16 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void AttackPlayer()
-    {
-        if (playerScript != null)
-        {
-            playerScript.TakeDamage(damageToPlayer);
+    //private void AttackPlayer()
+    //{
+    //    if (playerScript != null)
+    //    {
+    //        playerScript.TakeDamage(damageToPlayer);
 
-            Vector2 pushDir = (playerTarget.position - transform.position).normalized;
-            playerScript.ApplyKnockback(pushDir, knockbackForce);
-        }
-    }
+    //        Vector2 pushDir = (playerTarget.position - transform.position).normalized;
+    //        playerScript.ApplyKnockback(pushDir, knockbackForce);
+    //    }
+    //}
 
     public void TakeDamage(int damageAmount)
     {

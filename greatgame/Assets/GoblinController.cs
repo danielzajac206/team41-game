@@ -26,12 +26,13 @@ public class GoblinController : MonoBehaviour
 
     public GameObject hitboxPrefab;
 
-    public float viewRadius = 15f;
+    public float viewRadius = 10f;
     public float viewAngle = 90f;
     public LayerMask playerLayer;
     public LayerMask obstacleLayer;
 
     protected bool isKnockedback = false;
+    protected bool takingDamage = false;
 
     protected void Start()
     {
@@ -82,36 +83,8 @@ public class GoblinController : MonoBehaviour
             CheckVision();
         }
     }
-    bool LookForPlayer()
-    {
-        Vector2 dir = (player.position - transform.position).normalized;
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        Vector2 forward;
-        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
-        {
-            forward = dir.x > 0 ? Vector2.right : Vector2.left;
-        }
-        else
-        {
-            forward = dir.y > 0 ? Vector2.up : Vector2.down;
-        }
-
-        if (distanceToPlayer > viewRadius)
-            return false;
-
-        float angleToPlayer = Vector2.Angle(forward, dir);
-        if (angleToPlayer > viewAngle / 2)
-            return false;
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceToPlayer, obstacleLayer);
-        if (hit.collider != null)
-            return false;
-
-        return true;
-    }
-
-    protected void CheckVision()
+    protected virtual void CheckVision()
     {
         if (isKnockedback) { return; }
         Collider2D playerInRange = Physics2D.OverlapCircle(transform.position, viewRadius, playerLayer);
@@ -143,6 +116,10 @@ public class GoblinController : MonoBehaviour
                 //}
                 Move(dir);
             }
+        }
+        else if (takingDamage) {
+            Vector2 dir = (player.transform.position - transform.position).normalized;
+            Move(dir);
         }
         else
         {
@@ -266,6 +243,8 @@ public class GoblinController : MonoBehaviour
     {
         if (isDead) return;
         health -= damage;
+        takingDamage = true;
+        StartCoroutine(SetTakingDamageFalse());
 
         StartCoroutine(Knockback(direction, force, 0.1f));
         if (health <= 0)
@@ -277,6 +256,16 @@ public class GoblinController : MonoBehaviour
             Vector2 dir = player.position - transform.position;
             DeathAnim(dir);
         }
+    }
+
+    IEnumerator SetTakingDamageFalse()
+    {
+        if (!takingDamage)
+        {
+            yield break;
+        }
+        yield return new WaitForSeconds(5);
+        takingDamage = false;
     }
 
     protected IEnumerator Knockback(Vector2 direction, float force, float duration)

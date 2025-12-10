@@ -32,7 +32,8 @@ public class GreenButton : MonoBehaviour
         {
              if (controller != null) 
              {
-                 controller.SpawnReward();
+                //controller.SpawnReward();
+                controller.AddCorrect();
              }
         }
     }

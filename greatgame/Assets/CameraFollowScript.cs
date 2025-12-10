@@ -12,19 +12,28 @@ public class CameraFollowScript : MonoBehaviour
     [SerializeField] private float cameraLimitX = 6.2F;
     [SerializeField] private float cameraLimitY = 4.55F;
     public bool camMvmntDisabled = false;
+    bool gameOver = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        camMvmntDisabled = false;
+        gameOver = false;
         Camera.main.orthographicSize = 7;
         velocity = Vector3.zero;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (camMvmntDisabled) { 
             return; 
+        }
+
+        if (gameOver)
+        {
+            Vector3 targetPosition = new Vector3(player.transform.position.x - 4.37f, player.transform.position.y - 1.76f, transform.position.z);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, damping, Mathf.Infinity, Time.unscaledDeltaTime);
         }
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -51,5 +60,16 @@ public class CameraFollowScript : MonoBehaviour
 
         // Move towards target
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, damping);
+    }
+
+    public void GameOver()
+    {
+        gameOver = true;
+        //camMvmntDisabled = true;
+        //targetPosition.x = player.transform.position.x - 4.37f;
+        //targetPosition.y = player.transform.position.y - 1.76f;
+        //targetPosition.z = transform.position.z;
+        //transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, damping, Mathf.Infinity, Time.unscaledDeltaTime);
+        Debug.Log("game over");
     }
 }

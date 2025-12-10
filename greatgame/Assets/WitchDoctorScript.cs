@@ -62,6 +62,45 @@ public class WitchDoctorScript : GoblinController
         }
     }
 
+    protected override void CheckVision()
+    {
+        if (isKnockedback) { return; }
+        Collider2D playerInRange = Physics2D.OverlapCircle(transform.position, viewRadius, playerLayer);
+        if (playerInRange != null)
+        {
+            Vector2 dir = (playerInRange.transform.position - transform.position).normalized;
+            Vector2 forward;
+            if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+            {
+                forward = dir.x > 0 ? transform.right : -transform.right;
+            }
+            else
+            {
+                forward = dir.y > 0 ? transform.up : -transform.up;
+            }
+            float angleBetween = Vector2.Angle(forward, dir);
+
+            if (angleBetween < viewAngle / 2)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, viewRadius, obstacleLayer);
+                if (hit.collider == null)
+                {
+                    Debug.Log("player spotted");
+                    Move(dir);
+                }
+                else
+                {
+                    Debug.Log("view blocked by" + hit.collider.name);
+                }
+            }
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            animator.SetTrigger("Idle");
+        }
+    }
+
     public void SpawnFireball()
     {
         Vector3 spawnPos = transform.position;

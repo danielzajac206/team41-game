@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2430900521982988483}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.4, y: -0.69, z: 0}
+  m_LocalPosition: {x: 5.4, y: -0.69, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -187,11 +187,11 @@ MonoBehaviour:
   maxHealth: 150
   player: {fileID: 0}
   moveSpeed: 2
-  attackRange: 2
+  attackRange: 1.8
   attackDuration: 0.75
   attackCooldown: 0.5
   hitboxPrefab: {fileID: 7492318801106416931, guid: 74e5fbed34e60614e8a04376608179b5, type: 3}
-  viewRadius: 15
+  viewRadius: 10
   viewAngle: 90
   playerLayer:
     serializedVersion: 2

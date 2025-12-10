@@ -17,9 +17,12 @@ public class StarSwitch : MonoBehaviour
         UpdateSprite();
     }
 
-    private void OnMouseDown()
+    private void OnMouseOver()
     {
-        controller.HitSwitch(this);
+        if(Input.GetMouseButtonDown(1))
+        {
+            controller.HitSwitch(this);
+        }
     }
 
     public void SetOn(bool value)
