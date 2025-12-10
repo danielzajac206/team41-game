@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Stats")]
     [SerializeField] int health;
     [SerializeField] int maxHealth = 5;
     [SerializeField] HealthScript healthScript;
@@ -20,6 +21,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject fireballPrefab;
     [SerializeField] GameObject bowPrefab;
 
+    [Header("Movement Settings")]
+    [SerializeField] float walkSpeed = 4.0f;
+    [SerializeField] private Rigidbody2D playerBody;
+    
+    [Header("Combat Settings")]
+    [SerializeField] float attackRange = 1.5f;    
+    [SerializeField] int attackDamage = 25;       
+    [SerializeField] float knockbackForce = 10f; 
+    [SerializeField] LayerMask enemyLayers;       
+    [SerializeField] float attackCooldown = 0.5f; 
+
+    [Header("Interaction Settings")]
+    [SerializeField] LayerMask interactionLayers; 
+
+    [Header("Visuals")]
+    [SerializeField] Sprite normalSprite;
+    [SerializeField] Sprite hitSprite;
+
+    private Vector2 playerVelocity;
     private bool inAction;
     //private List<KeyCode> keyStack = new List<KeyCode>();
     private string lastDir;
@@ -42,6 +62,7 @@ public class PlayerController : MonoBehaviour
         inAction = false;
         animator = GetComponent<Animator>();
         healthScript = GameObject.Find("Health").GetComponent<HealthScript>();
+        playerBody = GetComponent<Rigidbody2D>();
         health = maxHealth;
     }
 
@@ -55,7 +76,6 @@ public class PlayerController : MonoBehaviour
         playerBody.velocity = Vector2.ClampMagnitude(playerVelocity, walkSpeed);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isDead)
@@ -214,18 +234,65 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
 
-        if (!inAction && Input.GetKeyDown(KeyCode.Space))
+    private void HandleCombat()
+    {
+        if (isKnockedBack) return; 
+
+        if (!inAction && Input.GetKeyDown(KeyCode.Space)) Interact();
+        if (Input.GetKeyDown(KeyCode.LeftShift)) Dodge();
+
+        if (Time.time >= nextAttackTime)
         {
-            Interact();
+            if (Input.GetMouseButtonDown(0))
+            {
+                Interact();
+                Attack();
+                nextAttackTime = Time.time + attackCooldown;
+            }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        StartCoroutine(PlayHitEffect());
+        Debug.Log($"Player HP: {currentHealth}");
+    }
+
+    public void ApplyKnockback(Vector2 direction, float force)
+    {
+        isKnockedBack = true;
+        playerBody.velocity = direction * force; 
+        StartCoroutine(ResetKnockback());
+    }
+
+    private IEnumerator ResetKnockback()
+    {
+        yield return new WaitForSeconds(0.2f); 
+        playerBody.velocity = Vector2.zero;    
+        isKnockedBack = false;                 
+    }
+
+    private IEnumerator PlayHitEffect()
+    {
+        if (spriteRenderer != null)
         {
-            Dodge();
+            if (hitSprite != null) spriteRenderer.sprite = hitSprite;
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = Color.white;
+            if (normalSprite != null) spriteRenderer.sprite = normalSprite;
         }
+    }
 
-        if (Input.GetMouseButtonDown(0))
+    private void Attack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);
+
+        // MAY NEED TO CHANGE???????????????
+        foreach(Collider2D enemyCollider in hitEnemies)
         {
             //StartCoroutine(AttackMelee(dir));
             //Debug.Log("Attack");
@@ -257,13 +324,47 @@ public class PlayerController : MonoBehaviour
 
     private void Interact()
     {
-        return;
+        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, attackRange, interactionLayers);
+
+        bool foundAnything = false;
+
+        foreach(Collider2D obj in hitObjects)
+        {
+            GreenChargeButton chargeButton = obj.GetComponentInParent<GreenChargeButton>();
+            if (chargeButton != null)
+            {
+                chargeButton.Interact();
+                foundAnything = true;
+                return;
+            }
+
+            ColorSwitch colorSwitch = obj.GetComponentInParent<ColorSwitch>();
+            if (colorSwitch != null)
+            {
+                colorSwitch.Interact();
+                foundAnything = true;
+                return; 
+            }
+
+            GreenButton greenButton = obj.GetComponentInParent<GreenButton>();
+            if (greenButton != null)
+            {
+                greenButton.Interact();
+                foundAnything = true;
+                return;
+            }
+
+            EnemyAI enemyScript = obj.GetComponentInParent<EnemyAI>();
+            if (enemyScript != null)
+            {
+                Vector2 pushDir = (obj.transform.position - transform.position).normalized;
+                enemyScript.ApplyKnockback(pushDir, 2f); 
+                foundAnything = true;
+            }
+        }
     }
 
-    private void Dodge()
-    {
-        return;
-    }
+    private void Dodge() { }
 
     private void AttackMelee(Vector2 dir)
     {
