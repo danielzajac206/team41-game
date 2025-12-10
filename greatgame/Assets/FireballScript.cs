@@ -15,22 +15,45 @@ public class FireballScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         //rb.velocity = transform.right * speed;
+        Destroy(gameObject, 5f); // Destroy after 5 seconds
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Ignore collisions with other fireballs
+        if (collision.gameObject.GetComponent<FireballScript>() != null)
+        {
+            return;
+        }
+        
         rb.velocity = Vector3.zero;
         animator.Play("fireball-collision");
-        Debug.Log("Collision");
-        Debug.Log(collision.gameObject.name);
-            
+        
+        // Check if it's the player
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.TakeDamage(damage);
+        }
     }
+    
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        // Ignore triggers with other fireballs
+        if (collider.gameObject.GetComponent<FireballScript>() != null)
+        {
+            return;
+        }
+        
         rb.velocity = Vector3.zero;
         animator.Play("fireball-collision");
-        Debug.Log("Collider");
-
+        
+        // Check if it's the player
+        PlayerController player = collider.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.TakeDamage(damage);
+        }
     }
 
     void Explode()
@@ -40,9 +63,7 @@ public class FireballScript : MonoBehaviour
         {
             if (hit.CompareTag("Player"))
             {
-                //hit.GetComponent<GoblinController>()?.TakeDamage(damage);
-                Vector2 knockbackDir = hit.transform.position - transform.position;
-                hit.GetComponent<PlayerController>()?.TakeDamage(damage, knockbackDir, 20f);
+                hit.GetComponent<PlayerController>()?.TakeDamage(damage);
             }
         }
 

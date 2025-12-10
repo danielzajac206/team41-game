@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b74feccc6df2a44db02dbd9648aa035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 610895373243732287, guid: d50b16dc49e86314cac03065a773e0e5, type: 3}
   arrow: {fileID: 2327222743755785359}
 --- !u!1001 &6035016058652584776
 PrefabInstance:

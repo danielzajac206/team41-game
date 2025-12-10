@@ -38,6 +38,12 @@ public class ArrowScript : MonoBehaviour
                 hit.GetComponent<GoblinController>()?.TakeDamage(damage, knockbackDir, 10f);
                 StickToEnemy(hit.transform);
             }
+            else if (hit.CompareTag("Boss"))
+            {
+                hit.GetComponent<BossController>()?.TakeDamage(damage);
+                Destroy(gameObject); // Arrow is destroyed when hitting boss
+                return;
+            }
         }
         StartCoroutine(DeleteArrow());
         Debug.Log("Collision");
@@ -54,6 +60,12 @@ public class ArrowScript : MonoBehaviour
             {
                 Vector2 knockbackDir = hit.transform.position - transform.position;
                 hit.GetComponent<GoblinController>()?.TakeDamage(damage, knockbackDir, 5f);
+            }
+            else if (hit.CompareTag("Boss"))
+            {
+                hit.GetComponent<BossController>()?.TakeDamage(damage);
+                Destroy(gameObject);
+                return;
             }
         }
         Debug.Log("Collider");

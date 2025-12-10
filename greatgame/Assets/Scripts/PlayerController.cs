@@ -12,25 +12,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int health;
     [SerializeField] int maxHealth = 5;
     [SerializeField] HealthScript healthScript;
-
-    [SerializeField] float walkSpeed = 2.0f;
-    [SerializeField] private Rigidbody2D playerBody;
-    [SerializeField] private Vector2 playerVelocity;
-    [SerializeField] private Animator animator;
-    [SerializeField] GameObject hitboxPrefab;
-    [SerializeField] GameObject fireballPrefab;
-    [SerializeField] GameObject bowPrefab;
+    private int currentHealth;
 
     [Header("Movement Settings")]
     [SerializeField] float walkSpeed = 4.0f;
     [SerializeField] private Rigidbody2D playerBody;
+    private Vector2 playerVelocity;
     
     [Header("Combat Settings")]
     [SerializeField] float attackRange = 1.5f;    
     [SerializeField] int attackDamage = 25;       
     [SerializeField] float knockbackForce = 10f; 
     [SerializeField] LayerMask enemyLayers;       
-    [SerializeField] float attackCooldown = 0.5f; 
+    [SerializeField] float attackCooldown = 0.5f;
+    private float nextAttackTime = 0f;
 
     [Header("Interaction Settings")]
     [SerializeField] LayerMask interactionLayers; 
@@ -38,9 +33,14 @@ public class PlayerController : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] Sprite normalSprite;
     [SerializeField] Sprite hitSprite;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Animator animator;
+    [SerializeField] GameObject hitboxPrefab;
+    [SerializeField] GameObject fireballPrefab;
+    [SerializeField] GameObject bowPrefab;
 
-    private Vector2 playerVelocity;
     private bool inAction;
+    private bool isKnockedBack;
     //private List<KeyCode> keyStack = new List<KeyCode>();
     private string lastDir;
     private bool isAttacking = false;
@@ -61,9 +61,11 @@ public class PlayerController : MonoBehaviour
     {
         inAction = false;
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         healthScript = GameObject.Find("Health").GetComponent<HealthScript>();
         playerBody = GetComponent<Rigidbody2D>();
         health = maxHealth;
+        currentHealth = maxHealth;
     }
 
     private void FixedUpdate()
@@ -289,6 +291,9 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dir = mousePos - (Vector2)transform.position;
+        
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);
 
         // MAY NEED TO CHANGE???????????????
@@ -309,7 +314,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // shooting bow 
-        else if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             //ShootProjectile(dir);
             //Debug.Log("Fireball");
@@ -593,14 +598,17 @@ public class PlayerController : MonoBehaviour
         health -= damage;
 
         StartCoroutine(Knockback(direction, force, 0.1f));
-        if (health <= 0)
+        //if (health <= 0)
+        //{
+        //    health = 0;
+        //    isDead = true;
+        //    playerBody.velocity = Vector3.zero;
+        //    Death();
+        //}
+        if (healthScript != null)
         {
-            health = 0;
-            isDead = true;
-            playerBody.velocity = Vector3.zero;
-            Death();
+            healthScript.UpdateHealth(health);
         }
-        healthScript.UpdateHealth(health);
     }
 
     IEnumerator Knockback(Vector2 direction, float force, float duration)
@@ -622,6 +630,13 @@ public class PlayerController : MonoBehaviour
 
     void Death()
     {
+        // Stop music
+        MusicManager musicManager = FindObjectOfType<MusicManager>();
+        if (musicManager != null)
+        {
+            musicManager.StopMusic();
+        }
+        
         playerBody.bodyType = RigidbodyType2D.Static;
         animator.Play("player-death");
         Time.timeScale = 0.25f;
