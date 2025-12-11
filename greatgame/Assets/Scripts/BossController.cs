@@ -42,6 +42,12 @@ public class BossController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalSprite = spriteRenderer.sprite;
         nextAttackTime = Time.time + attackCooldown; // Initialize first attack time
+        
+        Debug.Log($"Boss Animator: {(animator != null ? "Found" : "NULL")}");
+        if (animator != null && animator.runtimeAnimatorController != null)
+        {
+            Debug.Log($"Animator Controller: {animator.runtimeAnimatorController.name}");
+        }
     }
 
     void Update()
@@ -63,6 +69,7 @@ public class BossController : MonoBehaviour
         }
         else if (!isAttacking && animator != null)
         {
+            Debug.Log("Playing boss_idle animation");
             animator.CrossFade("boss_idle", 0);
         }
     }
@@ -77,6 +84,7 @@ public class BossController : MonoBehaviour
         if (rand < 0.33f)
         {
             // Three fireball attack
+            Debug.Log("Playing boss_shoot animation");
             animator.CrossFade("boss_shoot", 0);
             yield return new WaitForSeconds(0.3f);
             ShootThreeFireballs();
