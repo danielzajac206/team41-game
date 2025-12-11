@@ -22,6 +22,7 @@ public class KeysDropScript : MonoBehaviour
         if (player != null)
         {
             player.addKey();
+            player.PlayUnlockOne();
             Destroy(gameObject);
         }
     }

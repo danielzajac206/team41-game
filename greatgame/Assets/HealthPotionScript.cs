@@ -24,6 +24,7 @@ public class HealthPotionScript : MonoBehaviour
             if (player.GetHealth() < player.GetMaxHealth())
             {
                 player.SetHealth(player.GetHealth() + 2);
+                player.PlayHeal();
                 Destroy(gameObject);
             }
         }

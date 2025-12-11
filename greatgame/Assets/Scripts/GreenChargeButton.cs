@@ -20,10 +20,14 @@ public class GreenChargeButton : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool isComplete = false;
 
+    [SerializeField] AudioClip solved;
+    AudioSource audioSource;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateColor();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Interact()
@@ -52,10 +56,12 @@ public class GreenChargeButton : MonoBehaviour
     private void CompletePuzzle()
     {
         isComplete = true;
+        audioSource.clip = solved;
+        audioSource.Play();
 
         if (chestPrefab != null)
         {
-            Vector3 spawnPos = new Vector3(spawnX, spawnY, 0f);
+            Vector3 spawnPos = new Vector3(spawnX, spawnY, -0.01f);
             Instantiate(chestPrefab, spawnPos, Quaternion.identity);
         }
     }

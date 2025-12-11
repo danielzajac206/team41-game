@@ -6,6 +6,7 @@ public class GoblinController : MonoBehaviour
 {
     [SerializeField] float health;
     [SerializeField] float maxHealth = 100;
+    [SerializeField] GameObject healthPotion;
 
     public Transform player;
     public float moveSpeed = 2f;
@@ -33,6 +34,13 @@ public class GoblinController : MonoBehaviour
 
     protected bool isKnockedback = false;
     protected bool takingDamage = false;
+
+    [SerializeField] protected AudioSource walkingAudioSource;
+    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioClip walkingSound;
+    [SerializeField] protected AudioClip attackSound;
+    [SerializeField] protected AudioClip hitSound;
+    [SerializeField] protected AudioClip deathSound;
 
     protected void Start()
     {
@@ -115,6 +123,10 @@ public class GoblinController : MonoBehaviour
                 //    Debug.Log("view blocked by" + hit.collider.name);
                 //}
                 Move(dir);
+                //walkingAudioSource.clip = walkingSound;
+                //walkingAudioSource.Play();
+                //walkingAudioSource.loop = true;
+                //walkingAudioSource.PlayOneShot(walkingSound);
             }
         }
         else if (takingDamage) {
@@ -125,6 +137,7 @@ public class GoblinController : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             animator.SetTrigger("Idle");
+            walkingAudioSource.Stop();
         }
     }
 
@@ -188,6 +201,9 @@ public class GoblinController : MonoBehaviour
 
         attackDirection = dir;
 
+        audioSource.clip = attackSound;
+        audioSource.Play();
+
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
             if (dir.x > 0)
@@ -246,6 +262,9 @@ public class GoblinController : MonoBehaviour
         takingDamage = true;
         StartCoroutine(SetTakingDamageFalse());
 
+        audioSource.clip = hitSound;
+        audioSource.Play();
+
         StartCoroutine(Knockback(direction, force, 0.1f));
         if (health <= 0)
         {
@@ -286,6 +305,8 @@ public class GoblinController : MonoBehaviour
 
     protected virtual void DeathAnim(Vector2 dir)
     {
+        audioSource.clip = deathSound;
+        audioSource.Play();
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
             if (dir.x > 0)
@@ -313,6 +334,12 @@ public class GoblinController : MonoBehaviour
     }
     protected void DestroyObject()
     {
-        Destroy(gameObject);
+        float chance = Random.Range(0f, 1f);
+
+        if (chance <= 0.1f)
+        {
+            Instantiate(healthPotion, transform.position, Quaternion.identity);
+        }
+            Destroy(gameObject);
     }
 }

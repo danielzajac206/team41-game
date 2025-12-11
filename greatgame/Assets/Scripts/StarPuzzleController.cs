@@ -16,6 +16,15 @@ public class StarPuzzleController : MonoBehaviour
 
     public bool IsSolved => puzzleSolved;
 
+    [SerializeField] AudioClip switchHit;
+    [SerializeField] AudioClip solved;
+    AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void HitSwitch(StarSwitch sw)
     {
         if (puzzleSolved) return;
@@ -26,6 +35,8 @@ public class StarPuzzleController : MonoBehaviour
         {
             sw.SetOn(true);
             progress++;
+            audioSource.clip = switchHit;
+            audioSource.Play();
 
             if (progress >= correctOrder.Length)
             {
@@ -50,6 +61,8 @@ public class StarPuzzleController : MonoBehaviour
 
     private void OnPuzzleSolved()
     {
+        audioSource.clip = solved;
+        audioSource.Play();
         if (doorToOpen != null)
         {
             doorToOpen.SetActive(false); 

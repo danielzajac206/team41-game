@@ -5,6 +5,8 @@ using UnityEngine;
 public class WitchDoctorScript : GoblinController
 {
     [SerializeField] GameObject fireballPrefab;
+
+    [SerializeField] AudioClip shootFireball;
     protected override void Move(Vector2 dir)
     {
         Vector2 moveDir = dir.normalized;
@@ -94,6 +96,11 @@ public class WitchDoctorScript : GoblinController
                 }
             }
         }
+        else if (takingDamage)
+        {
+            Vector2 dir = (player.transform.position - transform.position).normalized;
+            Move(dir);
+        }
         else
         {
             rb.velocity = Vector2.zero;
@@ -115,6 +122,9 @@ public class WitchDoctorScript : GoblinController
             spawnPos.y += attackDirection.y > 0 ? 2 : -2;
         }
 
+        audioSource.clip = shootFireball;
+        audioSource.Play();
+
         GameObject fb = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
 
         if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
@@ -135,6 +145,8 @@ public class WitchDoctorScript : GoblinController
 
     protected override void DeathAnim(Vector2 dir)
     {
+        audioSource.clip = deathSound;
+        audioSource.Play();
         animator.Play("witchdoctor_death");
     }
 }

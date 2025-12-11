@@ -45,6 +45,7 @@ public class BossGateScript : MonoBehaviour
 
     IEnumerator UnlockBoss()
     {
+        player.GetComponent<PlayerController>().PlayUnlockGate();
         unlockText.enabled = true;
         unlockText.gameObject.GetComponent<Animator>().Play("unlocktext_enable");
 

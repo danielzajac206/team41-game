@@ -13,8 +13,19 @@ public class GreenButtonController : MonoBehaviour
 
     private bool hasSpawned = false;
 
+    [SerializeField] AudioClip switchHit;
+    [SerializeField] AudioClip solved;
+    AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void AddCorrect()
     {
+        audioSource.clip = switchHit;
+        audioSource.Play();
         numCorrect++;
     }
 

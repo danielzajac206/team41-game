@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings;
 
 public class BowScript : MonoBehaviour
 {
@@ -13,6 +13,10 @@ public class BowScript : MonoBehaviour
     Animator animator;
     Vector3 mousePos;
     bool isDrawing = false;
+
+    AudioSource audioSource;
+    [SerializeField] AudioClip drawBow;
+    [SerializeField] AudioClip shootBow;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +24,7 @@ public class BowScript : MonoBehaviour
         //gameObject.SetActive(false);
         GetComponent<SpriteRenderer>().enabled = false;
         arrow.GetComponent<SpriteRenderer>().enabled = false;
+        audioSource = GetComponent<AudioSource>();
         player = transform.parent;
     }
     void Update()
@@ -30,6 +35,8 @@ public class BowScript : MonoBehaviour
         Vector3 dir = (mousePos - player.position).normalized;
         if (Input.GetMouseButton(1) && player.gameObject.GetComponent<PlayerController>().bowCooldownTimer <= 0)
         {
+            audioSource.clip = drawBow;
+            audioSource.Play();
             arrow.GetComponent<BoxCollider2D>().enabled = false;
 
             GetComponent<SpriteRenderer>().enabled = true;
@@ -67,6 +74,7 @@ public class BowScript : MonoBehaviour
             if (Input.GetMouseButtonUp(1))
             {
                 Destroy(gameObject);
+                audioSource.Stop();
             }
         }
         else
@@ -134,5 +142,15 @@ public class BowScript : MonoBehaviour
     {
         isDrawing = true;
         Debug.Log("not isdrawing");
+    }
+
+    public void PlayShootBow()
+    {
+        audioSource.PlayOneShot(shootBow);
+    }
+
+    public void PlayDrawBow()
+    {
+        audioSource.PlayOneShot(drawBow);
     }
 }

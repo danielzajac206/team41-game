@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ColorController : MonoBehaviour
@@ -20,6 +21,14 @@ public class ColorController : MonoBehaviour
 
     private bool hasSpawned = false;
 
+    [SerializeField] AudioClip solved;
+    AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void CheckPuzzle()
     {
         bool isSolved = true;
@@ -35,6 +44,8 @@ public class ColorController : MonoBehaviour
 
         if (isSolved && !hasSpawned)
         {
+            audioSource.clip = solved;
+            audioSource.Play();
             SpawnReward();
         }
     }
@@ -43,7 +54,7 @@ public class ColorController : MonoBehaviour
     {
         if (chestPrefab != null)
         {
-            Vector3 finalPosition = new Vector3(spawnX, spawnY, 0f);
+            Vector3 finalPosition = new Vector3(spawnX, spawnY, -0.01f);
             
             Instantiate(chestPrefab, finalPosition, Quaternion.identity);
             

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,6 +19,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D playerBody;
     [SerializeField] private Vector2 playerVelocity;
     private bool inAction;
+
+    [Header("Dodge Settings")]
+    [SerializeField] private float dodgeSpeed = 12f;
+    [SerializeField] private float dodgeDuration = 0.25f;
+    [SerializeField] private float dodgeCooldown = 0.6f;
+    private float dodgeCooldownTimer = 0f;
+
+    private bool isDodging = false;
 
     [Header("Combat Settings")]  
     [SerializeField] int attackDamage = 50;       
@@ -50,6 +58,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject gameOver;
     private string lastDir;
 
+    [Header("Sound")]
+    [SerializeField] MusicManager musicManager;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioSource walkingAudioSource;
+    [SerializeField] AudioClip walkingSound;
+    [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip getHit;
+    [SerializeField] AudioClip dodgeSound;
+    [SerializeField] AudioClip bowPickup;
+    [SerializeField] AudioClip heal;
+    [SerializeField] AudioClip unlock;
+    [SerializeField] AudioClip unlockGate;
+    [SerializeField] AudioClip openChest;
+
+    [SerializeField] float stepInterval = 0.25f;
+    float stepTimer;
+    bool firstWalk = false;
+
+    bool isWin = false;
+
     void Start()
     {
         isDead = false;
@@ -59,6 +87,8 @@ public class PlayerController : MonoBehaviour
         playerBody = GetComponent<Rigidbody2D>();
         maxHealth = healthScript.GetMaxHealth();
         health = maxHealth;
+        //audioSource = GetComponent<AudioSource>();
+        stepTimer = stepInterval;
     }
 
     private void FixedUpdate()
@@ -73,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (isDead)
+        if (isDead || isWin)
         {
             return;
         }
@@ -82,6 +112,16 @@ public class PlayerController : MonoBehaviour
 
         playerVelocity.x = Input.GetAxisRaw("Horizontal") * walkSpeed;
         playerVelocity.y = Input.GetAxisRaw("Vertical") * walkSpeed;
+
+        if (isDodging)
+        {
+            return;
+        }
+        else
+        {
+            if (dodgeCooldownTimer > 0)
+                dodgeCooldownTimer -= Time.deltaTime;
+        }
 
         if (isLocked)
         {
@@ -201,12 +241,36 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        if (playerVelocity != Vector2.zero)
+        {
+            if (!firstWalk)
+            {
+                walkingAudioSource.PlayOneShot(walkingSound);
+                firstWalk = true;
+                stepTimer = 0f;
+            }
+
+            stepTimer += Time.deltaTime;
+
+            if (stepTimer >= stepInterval)
+            {
+                walkingAudioSource.PlayOneShot(walkingSound);
+                stepTimer = 0f;
+            }
+        }
+        else
+        {
+            stepTimer = 0f;
+            firstWalk = false;
+        }
+
         //if (!inAction && Input.GetKeyDown(KeyCode.Space))
         //{
         //    Interact();
         //}
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Dodge();
         }
@@ -279,13 +343,75 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Dodge() { }
+    private void Dodge() 
+    {
+        if (isDodging || dodgeCooldownTimer > 0f || isAttacking || isLocked)
+            return;
+
+        Vector2 inputDir = new Vector2(
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        ).normalized;
+
+        if (inputDir == Vector2.zero)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            inputDir = (mousePos - (Vector2)transform.position).normalized;
+        }
+
+        //if (lastDir == "x")
+        //    inputDir.y = 0;
+        //else
+        //    inputDir.x = 0;
+
+        //inputDir.Normalize();
+
+        StartCoroutine(DodgeRoll(inputDir));
+    }
+
+    private IEnumerator DodgeRoll(Vector2 direction)
+    {
+        audioSource.clip = dodgeSound;
+        audioSource.Play();
+        isDodging = true;
+        isLocked = true;
+
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            animator.Play(direction.x > 0 ? "player-run-right" : "player-run-left");
+        }
+        else
+        {
+            animator.Play(direction.y > 0 ? "player-run-up" : "player-run-down");
+        }
+
+        float timer = 0f;
+
+        bool storedKnockback = isKnockedback;
+        isKnockedback = true;
+
+        while (timer < dodgeDuration)
+        {
+            playerBody.velocity = direction * dodgeSpeed;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        playerBody.velocity = Vector2.zero;
+        isKnockedback = storedKnockback;
+
+        isLocked = false;
+        isDodging = false;
+        dodgeCooldownTimer = dodgeCooldown;
+    }
 
     private void AttackMelee(Vector2 dir)
     {
         isAttacking = true;
         attackBuffered = false;
         attackDirection = dir;
+        audioSource.clip = attackSound;
+        audioSource.Play();
 
         if (comboStep == 1)
         {
@@ -426,8 +552,11 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 direction, float force)
     {
-        if (isDead) { return; }
+        if (isDead | isDodging) { return; }
         health -= damage;
+
+        audioSource.clip = getHit;
+        audioSource.Play();
 
         StartCoroutine(Knockback(direction, force, 0.1f));
         if (health <= 0)
@@ -491,6 +620,7 @@ public class PlayerController : MonoBehaviour
 
     void Death()
     {
+        musicManager.StopMusic();
         playerBody.bodyType = RigidbodyType2D.Static;
         animator.Play("player-death");
         Time.timeScale = 0.5f;
@@ -503,5 +633,47 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(0.5f);
         gameOver.SetActive(true);
+    }
+
+    public void Win()
+    {
+        musicManager.StopMusic();
+        isWin = true;
+        playerBody.bodyType = RigidbodyType2D.Static;
+        Time.timeScale = 0.5f;
+        StartCoroutine(WinAnim());
+    }
+    IEnumerator WinAnim()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.5f);
+    }
+
+    public void PlayerBowPickup()
+    {
+        audioSource.clip = bowPickup;
+        audioSource.Play();
+    }
+
+    public void PlayUnlockGate()
+    {
+        audioSource.clip = unlockGate;
+        audioSource.Play();
+    }
+    public void PlayUnlockOne()
+    {
+        audioSource.clip = unlock;
+        audioSource.Play();
+    }
+    public void PlayHeal()
+    {
+        audioSource.clip = heal;
+        audioSource.Play();
+    }
+    public void OpenChest()
+    {
+        audioSource.clip = openChest;
+        audioSource.Play();
     }
 }

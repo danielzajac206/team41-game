@@ -10,11 +10,11 @@ public class ChestInteraction : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (GetComponent<Collider>() == null)
-        {
-            var col = gameObject.AddComponent<BoxCollider>();
-            col.isTrigger = false;
-        }
+        //if (GetComponent<Collider>() == null)
+        //{
+        //    var col = gameObject.AddComponent<BoxCollider>();
+        //    col.isTrigger = false;
+        //}
     }
 
     //private void OnMouseDown()
@@ -31,6 +31,7 @@ public class ChestInteraction : MonoBehaviour
         if (rewardPrefab != null)
         {
             //Instantiate(rewardPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+            player.OpenChest();
             Instantiate(rewardPrefab, transform.position, Quaternion.identity);
             //player.SetBowPrefab(rewardPrefab);
         }

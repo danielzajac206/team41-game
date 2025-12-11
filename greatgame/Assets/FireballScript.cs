@@ -10,11 +10,14 @@ public class FireballScript : MonoBehaviour
 
     private Rigidbody2D rb;
     [SerializeField] Animator animator;
+    AudioSource audioSource;
+    [SerializeField] AudioClip explosion;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         //rb.velocity = transform.right * speed;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -35,6 +38,8 @@ public class FireballScript : MonoBehaviour
 
     void Explode()
     {
+        audioSource.clip = explosion;
+        audioSource.Play();
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 0.5f);
         foreach (var hit in hitColliders)
         {
